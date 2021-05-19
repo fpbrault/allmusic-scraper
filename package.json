@@ -1,19 +1,23 @@
 {
   "name": "allmusic-scraper",
   "version": "1.0.1",
-  "description": "",
+  "description": "Simple scraper to retrieve metadata of albums on allmusic.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fpbrault/allmusic-scraper.git"
+  },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.9",
+    "chalk": "^4.1.1",
     "exceljs": "^4.2.1",
-    "got": "^11.8.2",
-    "jsdom": "^16.5.3",
-    "node-fetch": "^2.6.1",
+    "loglevel": "^1.7.1",
+    "loglevel-plugin-prefix": "^0.8.4",
     "puppeteer": "^9.1.1"
   }
 }
