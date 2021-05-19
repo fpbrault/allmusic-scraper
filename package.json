@@ -1,0 +1,19 @@
+{
+  "name": "allmusic-scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.9",
+    "exceljs": "^4.2.1",
+    "got": "^11.8.2",
+    "jsdom": "^16.5.3",
+    "node-fetch": "^2.6.1",
+    "puppeteer": "^9.1.1"
+  }
+}
