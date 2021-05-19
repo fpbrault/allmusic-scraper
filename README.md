@@ -1,6 +1,6 @@
 # Allmusic-Scraper
 
-A simple album scraper for allmusic.com, written in node.js. 
+A simple album scraper for allmusic.com, written in node.js.
 
 ## Useful commands
 
