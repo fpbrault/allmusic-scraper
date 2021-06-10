@@ -71,17 +71,36 @@ var errorUrls = [];
 
 
 (async () => {
-    const browser = await puppeteer.launch();
+
+    const pageTimeout = 0;
+
+    const userAgent = 'Mozilla/5.0 (compatible; Googlebot/2.1)';
+    const browserOptions = {
+        headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu',
+            '--no-first-run',
+            '--no-zygote',
+            '--single-process']
+    };
+    const browser = await puppeteer.launch(browserOptions);
     const page = await browser.newPage();
+    const pageOptions = {
+        timeout: pageTimeout,
+        waitUntil: 'domcontentloaded'
+    };
+
+    await page.setViewport({ width: 1024, height: 1280 });
+    await page.setUserAgent(userAgent);
 
     log.info("Albums to retrieve: " + urlList.length)
-
+    const agents = ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36", "Mozilla/5.0 (iPad; CPU OS 13_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/79.0.3945.73 Mobile/15E148 Safari/604.1"]
     // Loop through list of albums and retrieve the metadata for each.
     for (let i = 0; i < urlList.length; i++) {
         log.info("Retrieving metadata for " + urlList[i].url + " | " + (i + 1) + "/" + urlList.length)
 
         try {
-            await page.goto(baseUrl + urlList[i].url);
+            const randomAgent = agents[Math.floor(Math.random() * agents.length)];
+            await page.setUserAgent(randomAgent)
+            await page.goto(baseUrl + urlList[i].url, pageOptions);
 
             const STYLES_SELECTOR = '.styles';
             const JSON_SELECTOR = 'script[type="application/ld+json"]';
@@ -95,7 +114,7 @@ var errorUrls = [];
 
             const metadata = JSON.parse(jsondata)
 
-            
+
             log.debug(metadata);
 
             // Add a new row
@@ -109,7 +128,7 @@ var errorUrls = [];
                     Styles: styledata.substring(7).split('\n').join(', ')
                 }
             );
-            await page.waitForTimeout(250);
+            await page.waitForTimeout(600);
         } catch (e) {
             log.error(urlList[i].url + ' | main program error:' + e);
             errorCount++
@@ -117,6 +136,7 @@ var errorUrls = [];
         }
     }
     await workbook.xlsx.writeFile("./album-info.xlsx");
+    await page.close();
     await browser.close();
 
     log.info("Scraping completed.")
