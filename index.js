@@ -79,7 +79,8 @@ var errorUrls = [];
         headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu',
             '--no-first-run',
             '--no-zygote',
-            '--single-process']
+            //'--single-process'
+        ]
     };
     const browser = await puppeteer.launch(browserOptions);
     const page = await browser.newPage();
@@ -92,14 +93,15 @@ var errorUrls = [];
     await page.setUserAgent(userAgent);
 
     log.info("Albums to retrieve: " + urlList.length)
-    const agents = ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36", "Mozilla/5.0 (iPad; CPU OS 13_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/79.0.3945.73 Mobile/15E148 Safari/604.1"]
+    //const agents = ["Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36", "Mozilla/5.0 (iPad; CPU OS 13_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/79.0.3945.73 Mobile/15E148 Safari/604.1"]
+    
     // Loop through list of albums and retrieve the metadata for each.
     for (let i = 0; i < urlList.length; i++) {
         log.info("Retrieving metadata for " + urlList[i].url + " | " + (i + 1) + "/" + urlList.length)
 
         try {
-            const randomAgent = agents[Math.floor(Math.random() * agents.length)];
-            await page.setUserAgent(randomAgent)
+            //const randomAgent = agents[Math.floor(Math.random() * agents.length)];
+            //await page.setUserAgent(randomAgent)
             await page.goto(baseUrl + urlList[i].url, pageOptions);
 
             const STYLES_SELECTOR = '.styles';
