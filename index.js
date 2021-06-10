@@ -112,7 +112,7 @@ var errorUrls = [];
 
 
             const styles = await page.$(STYLES_SELECTOR);
-            const styledata = await styles.evaluate(element => element.innerText);
+            const styledata = await styles?.evaluate(element => element.innerText);
 
             const metadata = JSON.parse(jsondata)
 
@@ -122,12 +122,12 @@ var errorUrls = [];
             // Add a new row
             worksheet.addRow(
                 {
-                    Artist: metadata.byArtist[0].name,
-                    AlbumId: urlList[i].url,
-                    PublishedDate: new Date(metadata.datePublished),
-                    Album: metadata.name,
-                    Genre: metadata.genre.join(','),
-                    Styles: styledata.substring(7).split('\n').join(', ')
+                    Artist: metadata?.byArtist[0]?.name,
+                    AlbumId: urlList[i]?.url,
+                    PublishedDate: typeof metadata?.datePublished !== 'undefined' ? new Date(metadata?.datePublished) : "",
+                    Album: metadata?.name,
+                    Genre: metadata?.genre?.join(','),
+                    Styles: styledata?.substring(7).split('\n').join(', ')
                 }
             );
             await page.waitForTimeout(600);
